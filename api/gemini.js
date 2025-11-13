@@ -1,54 +1,8 @@
-// api/gemini.js
-// Place this file in your Vercel project at: api/gemini.js
+// api/gemini.js - SUPER SIMPLE TEST VERSION
 
-export default async function handler(req, res) {
-  // Enable CORS
+export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  // Handle preflight OPTIONS request
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBghEVW4MvI1LJuWyU4kC0amRxpN-Fz3z0';
-    
-    // Forward the request to Gemini API
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: 'Gemini API error',
-        details: data,
-      });
-    }
-
-    return res.status(200).json(data);
-  } catch (error) {
-    console.error('Proxy error:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-      message: error.message,
-    });
-  }
+  res.status(200).json({ message: 'Hello from Vercel!' });
 }
 
 
